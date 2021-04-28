@@ -13,6 +13,7 @@ function love.update(dt)
 	World:update(dt)
 	Player:update(dt)
 	Camera:setPosition(Player.x, 0)
+	Map:update(dt)
 end
 
 function love.draw()
@@ -26,6 +27,7 @@ end
 
 function love.keypressed(key)
 	Player:jump(key)
+	Map:nextMap(key)
 end
 
 function beginContact(a, b, collision)

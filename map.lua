@@ -11,6 +11,28 @@ function Map:load()
    self:init()
 end
 
+function Map:update(dt)
+  self:nextMap()
+  self:changeMap()
+end
+
+function Map:changeLevel(currentLevel)
+  if currentLevel == 2 then
+    currentLevel = 1
+  elseif currentLevel == 1 then
+    currentLevel = 2
+  end
+  return currentLevel
+end
+
+function Map:nextMap()
+  if key == "e" or key == "f" then
+    self.currentLevel = self:changeLevel(self.currentLevel)
+  end
+end
+
+function Map:changeMap()
+
 function Map:init()
    self.level = STI("/assets/map/"..self.currentLevel..".lua", {"box2d"})
 
