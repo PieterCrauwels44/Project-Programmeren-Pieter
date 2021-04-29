@@ -13,25 +13,28 @@ end
 
 function Map:update(dt)
   self:nextMap()
-  self:changeMap()
 end
 
-function Map:changeLevel(currentLevel)
-  if currentLevel == 2 then
-    currentLevel = 1
-  elseif currentLevel == 1 then
-    currentLevel = 2
+function Map:changeLevel()
+  if self.currentLevel == 2 then
+    self.currentLevel = 1
+  elseif self.currentLevel == 1 then
+    self.currentLevel = 2
   end
-  return currentLevel
 end
 
-function Map:nextMap()
+function Map:nextMap(key)
   if key == "e" or key == "f" then
-    self.currentLevel = self:changeLevel(self.currentLevel)
+    self:changeLevel()
+    self:clean()
+    self:init()
+    setBackground()
   end
 end
 
-function Map:changeMap()
+function Map:clean()
+  self.level:box2d_removeLayer("solid")
+end
 
 function Map:init()
    self.level = STI("/assets/map/"..self.currentLevel..".lua", {"box2d"})
