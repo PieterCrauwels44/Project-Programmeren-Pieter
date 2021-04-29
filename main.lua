@@ -5,8 +5,12 @@ local Map = require("map")
 
 function love.load()
 	Map:load()
-	background = love.graphics.newImage("/assets/bg1.jpg")
+	setBackground()
 	Player:load()
+end
+
+function setBackground()
+ background = love.graphics.newImage("/assets/bg"..Map.currentLevel..".jpg")
 end
 
 function love.update(dt)
