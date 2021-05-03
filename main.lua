@@ -32,6 +32,8 @@ end
 function love.keypressed(key)
 	Player:jump(key)
 	Map:nextMap(key)
+	Player:crouch(key)
+	Player:dash(key)
 end
 
 function beginContact(a, b, collision)
