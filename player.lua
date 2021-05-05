@@ -23,6 +23,7 @@ function Player:load()
    self.crouched = false
    self.direction = "right"
    self.isDashing = false
+   self.alive = true
 
    self.physics = {}
    self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
@@ -33,12 +34,28 @@ function Player:load()
    self.physics.img = love.graphics.newImage("/assets/player.png")
 end
 
+function Player:die()
+   self.alive = false
+end
+
+function Player:respawn()
+   if not self.alive then
+      self:resetPosition()
+      self.alive = true
+   end
+end
+
+function Player:resetPosition()
+   self.physics.body:setPosition(self.startX, self.startY)
+end
+
 function Player:update(dt)
    self:syncPhysics()
    self:move(dt)
    self:applyGravity(dt)
+   self:move(dt)
    self:setDirection()
-   self:dash()
+   self:respawn()
 end
 
 function Player:applyGravity(dt)
@@ -64,10 +81,14 @@ function Player:dash(key)
 end
 
 function Player:move(dt)
-   if love.keyboard.isDown("d", "right") and not self.isDashing then
+   if love.keyboard.isDown("d", "right") then
+     if not self.isDashing then
       self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
-   elseif love.keyboard.isDown("a", "left") and not self.isDashing then
+     end
+   elseif love.keyboard.isDown("a", "left") then
+     if not self.isDashing then
       self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
+     end
    else
       self:applyFriction(dt)
    end

@@ -2,6 +2,7 @@
 local Map = {}
 local STI = require("sti")
 local Player = require("player")
+local Spike = require("spike")
 
 function Map:load()
    self.currentLevel = 1
@@ -34,6 +35,7 @@ end
 
 function Map:clean()
   self.level:box2d_removeLayer("solid")
+  Spike.removeAll()
 end
 
 function Map:init()
@@ -42,10 +44,20 @@ function Map:init()
    self.level:box2d_init(World)
    self.solidLayer = self.level.layers.solid
    self.groundLayer = self.level.layers.ground
-
+   self.entityLayer = self.level.layers.entity
    self.solidLayer.visible = false
-
+   self.entityLayer.visible = false
    MapWidth = self.groundLayer.width * 16
+
+   self:spawnEntities()
+end
+
+function Map:spawnEntities()
+	for i,v in ipairs(self.entityLayer.objects) do
+		if v.type == "spikes" then
+			Spike.new(v.x + v.width / 2, v.y + v.height / 2)
+		end
+	end
 end
 
 return Map
