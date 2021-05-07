@@ -8,14 +8,14 @@ function Player:load()
    self.xVel = 0
    self.yVel = 0
    self.maxSpeed = 200
-   self.dashSpeed = 1000
+   self.dashSpeed = 1500
    self.hasDash = true
-   self.acceleration = 4000
+   self.acceleration = 5000
    self.friction = 3500
    self.gravity = 1500
    self.jumpAmount = -500
-   self.width = 33
-   self.height = 60
+   self.width = 16
+   self.height = 32
    self.hasDouble = true
    self.graceTime = 0
    self.graceDuration = 0.1
@@ -31,7 +31,7 @@ function Player:load()
    self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
    self.physics.body:setGravityScale(0)
-   self.physics.img = love.graphics.newImage("/assets/player.png")
+   self.physics.img = love.graphics.newImage("/assets/player2.png")
 end
 
 function Player:die()
@@ -42,6 +42,8 @@ function Player:respawn()
    if not self.alive then
       self:resetPosition()
       self.alive = true
+      self.height = 32
+      self.crouched = false
    end
 end
 
@@ -53,6 +55,7 @@ function Player:update(dt)
    self:syncPhysics()
    self:move(dt)
    self:applyGravity(dt)
+   self:dash()
    self:move(dt)
    self:setDirection()
    self:respawn()
@@ -67,14 +70,11 @@ end
 function Player:dash(key)
   if key == "g" then
     if self.hasDash and not self.grounded then
-      self.isDashing = true
       self.hasDash = false
       if self.direction == "right" then
         self.xVel = self.dashSpeed
-        self.isDashing = false
       elseif self.direction == "left" then
         self.xVel = -self.dashSpeed
-        self.isDashing = false
       end
     end
   end
@@ -82,25 +82,33 @@ end
 
 function Player:move(dt)
    if love.keyboard.isDown("d", "right") then
-     if not self.isDashing then
+      if love.keyboard.isDown("g") then
+        self.acceleration = self.dashSpeed
+        self.maxSpeed = self.dashSpeed
+      end
       self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
-     end
+      self.acceleration = 5000
+      self.maxSpeed = 200
    elseif love.keyboard.isDown("a", "left") then
-     if not self.isDashing then
+      if love.keyboard.isDown("g") then
+       self.acceleration = self.dashSpeed
+       self.maxSpeed = self.dashSpeed
+      end
       self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
-     end
+      self.acceleration = 5000
+      self.maxSpeed = 200
    else
       self:applyFriction(dt)
    end
 end
 
 function Player:crouch(key)
-  if key == "s" or key == "down" then
-    self.height = 30
+  if key == "s" or key == "down" and self.grounded then
+    self.height = 32
     self.crouched = true
-  else
+  elseif key == "space" or key == "up" then
     self.crouched = false
-    self.height = 60
+    self.height = 32
   end
 end
 
@@ -188,8 +196,5 @@ end
 
 return Player
 
--- Double jump
--- Verandering richting
--- Dash
--- Grace time
--- Spike
+-- slow time
+-- climbing
