@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="70" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="31">
+ <editorsettings>
+  <export target="../../../Downloads/Project-Programmeren-Pieter-main (4)/Project-Programmeren-Pieter-main/assets/map/stranded2.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16" tilecount="16" columns="4">
+  <image source="../../../Downloads/Project-Programmeren-Pieter-main (4)/Project-Programmeren-Pieter-main/assets/tileset - Copy.png" width="64" height="64"/>
+ </tileset>
+ <layer id="1" name="ground" width="70" height="23">
+  <data encoding="csv">
+13,14,11,12,0,0,0,0,0,0,0,0,0,0,0,11,11,12,13,13,13,13,14,15,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,10,10,13,14,
+13,14,10,12,0,0,0,0,0,0,0,0,0,0,0,15,11,11,10,10,13,11,11,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,11,10,13,14,
+14,14,10,12,0,0,0,0,0,0,0,0,0,0,0,0,15,15,11,10,10,15,15,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,13,14,
+14,11,12,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,15,15,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,12,11,13,
+11,12,12,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,12,10,10,0,0,0,0,0,0,0,0,10,16,10,10,
+10,10,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,15,16,15,16,0,0,0,0,0,0,0,0,0,0,15,10,
+10,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,9,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,
+11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,12,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,9,11,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,12,15,16,15,16,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,9,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,15,16,0,0,0,0,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,12,11,12,11,9,11,12,11,12,11,12,11,12,11,12,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,16,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,15,16,15,16,9,9,15,16,15,16,15,16,15,16,15,16,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,12,11,12,11,12,11,12,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,15,9,15,16,15,16,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11,12,11,12,11,12,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,15,16,9,16,15,16,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+11,12,9,12,11,12,11,12,11,12,11,9,11,9,11,12,11,12,11,12,11,12,11,12,11,12,9,12,11,12,11,12,11,12,11,12,11,9,11,12,11,12,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+15,16,15,16,15,16,15,16,15,16,15,16,9,16,15,16,15,16,15,16,15,16,15,16,15,9,9,16,15,16,15,16,15,16,15,16,15,16,15,16,15,16,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,
+13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14,13,14
+</data>
+ </layer>
+ <objectgroup id="3" name="entity">
+  <object id="19" name="Spikes" type="spikes" x="464" y="128" width="34" height="34"/>
+  <object id="20" name="Spikes" type="spikes" x="606" y="275" width="34" height="34"/>
+  <object id="21" name="Spikes" type="spikes" x="800" y="206" width="34" height="34"/>
+  <object id="22" name="Spikes" type="spikes" x="704" y="241" width="34" height="34"/>
+  <object id="23" name="Spikes" type="spikes" x="768" y="207" width="34" height="34"/>
+  <object id="24" name="Spikes" type="spikes" x="739" y="209" width="34" height="34"/>
+ </objectgroup>
+ <objectgroup id="2" name="solid">
+  <object id="1" x="833.833" y="211.667" width="288.333" height="30.6667">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="3" x="-1.5" y="308.125" width="673" height="31.75">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="5" x="641" y="276" width="127" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="6" x="737.5" y="244" width="127" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="7" x="241.5" y="0" width="158" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="8" x="33.5" y="-1" width="30" height="81">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="9" x="0.5" y="79" width="32" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="10" x="1041.5" y="1" width="47" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="11" x="1054.5" y="34" width="32" height="44">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="12" x="1089.5" y="62" width="30" height="47">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="13" x="0.5" y="111.125" width="13" height="197.75">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="25" x="833" y="63" width="95" height="31">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="26" x="577" y="94" width="62" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="27" x="432" y="163" width="62" height="27">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="28" x="323" y="207" width="60" height="30">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="29" x="915" y="160" width="60" height="30">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="30" x="976" y="144" width="62" height="30">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
