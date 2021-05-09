@@ -39,7 +39,7 @@ function Map:clean()
 end
 
 function Map:init()
-   self.level = STI("/assets/map/"..self.currentLevel..".lua", {"box2d"})
+   self.level = STI("/assets/map/stranded1.lua", {"box2d"})
 
    self.level:box2d_init(World)
    self.solidLayer = self.level.layers.solid

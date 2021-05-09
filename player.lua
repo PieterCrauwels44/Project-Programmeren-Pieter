@@ -1,8 +1,8 @@
 local Player = {}
 
 function Player:load()
-   self.x = 100
-   self.y = 0
+   self.x = 10
+   self.y = 300
    self.startX = self.x
    self.startY = self.y
    self.xVel = 0
@@ -22,7 +22,6 @@ function Player:load()
    self.grounded = false
    self.crouched = false
    self.direction = "right"
-   self.isDashing = false
    self.alive = true
 
    self.physics = {}
@@ -90,10 +89,10 @@ function Player:move(dt)
       self.acceleration = 5000
       self.maxSpeed = 200
    elseif love.keyboard.isDown("a", "left") then
-      if love.keyboard.isDown("g") then
+     if love.keyboard.isDown("g") then
        self.acceleration = self.dashSpeed
        self.maxSpeed = self.dashSpeed
-      end
+     end
       self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
       self.acceleration = 5000
       self.maxSpeed = 200
@@ -198,3 +197,7 @@ return Player
 
 -- slow time
 -- climbing
+-- fix crouched
+-- level making
+-- unlockables
+-- fix dash
