@@ -23,7 +23,6 @@ function Player:load()
    self.crouched = false
    self.direction = "right"
    self.alive = true
-   self.isDashing = false
 
    self.physics = {}
    self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
@@ -68,40 +67,42 @@ function Player:applyGravity(dt)
 end
 
 function Player:dash(key)
-  if key == "g" and not self.grounded then
-    self.isDashing = true
+  if key == "g" then
+    if self.hasDash and not self.grounded then
+      self.hasDash = false
+      if self.direction == "right" then
+        self.xVel = self.dashSpeed
+      elseif self.direction == "left" then
+        self.xVel = -self.dashSpeed
+      end
+    end
   end
 end
 
 function Player:move(dt)
-
-   if self.isDashing == true and self.hasDash == true and not self.grounded then
-    if self.direction == "right" then
-      self.xVel = self.dashSpeed
-      self.hasDash = false
-    elseif self.direction == "left" then
-      self.xVel = -self.dashSpeed
-      self.hasDash = false
-    end
-    self.isDashing = false
-
-   elseif love.keyboard.isDown("d", "right") and not self.isDashing then
+   if love.keyboard.isDown("d", "right") then
+      if love.keyboard.isDown("g") then
+        self.acceleration = self.dashSpeed
+        self.maxSpeed = self.dashSpeed
+      end
       self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
       self.acceleration = 5000
       self.maxSpeed = 200
-
-   elseif love.keyboard.isDown("a", "left") and not self.isDashing then
+   elseif love.keyboard.isDown("a", "left") then
+     if love.keyboard.isDown("g") then
+       self.acceleration = self.dashSpeed
+       self.maxSpeed = self.dashSpeed
+     end
       self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
       self.acceleration = 5000
       self.maxSpeed = 200
-
    else
       self:applyFriction(dt)
    end
 end
 
 function Player:crouch(key)
-  if key == "s" or key == "down" or key == "c" and self.grounded then
+  if key == "s" or key == "down" and self.grounded then
     self.height = 32
     self.crouched = true
   elseif key == "space" or key == "up" then
@@ -197,6 +198,6 @@ return Player
 -- slow time
 -- climbing
 -- fix crouched
--- level
+-- level making
 -- unlockables
 -- fix dash
