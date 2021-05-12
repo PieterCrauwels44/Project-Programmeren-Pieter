@@ -1,15 +1,29 @@
 local Player = {}
 
+local DASHKEYS = {p=true}
+local JUMPKEYS = {space=true,w=true,up=true}
+
+local DASH = "dash"
+local JUMP = "jump"
+local DOUBLEJUMP = "doublejump"
+
 function Player:load()
    self.x = 10
    self.y = 300
    self.startX = self.x
    self.startY = self.y
+
    self.xVel = 0
    self.yVel = 0
    self.maxSpeed = 200
    self.dashSpeed = 1500
+	self.dashTime = 0
+	self.dashDuration = 0.15
+
    self.hasDash = true
+
+	self.actions = { }
+
    self.acceleration = 5000
    self.friction = 3500
    self.gravity = 1500
@@ -54,8 +68,8 @@ function Player:update(dt)
    self:syncPhysics()
    self:move(dt)
    self:applyGravity(dt)
-   self:dash()
-   self:move(dt)
+   --self:dash()
+   --self:move(dt)
    self:setDirection()
    self:respawn()
 end
@@ -67,7 +81,11 @@ function Player:applyGravity(dt)
 end
 
 function Player:dash(key)
-  if key == "g" then
+	if DASHKEYS[key] and self.hasDash and (not self.grounded) then
+		self.hasDash = false
+		table.insert(self.actions,DASH)
+	end
+--[[  if key == "g" then
     if self.hasDash and not self.grounded then
       self.hasDash = false
       if self.direction == "right" then
@@ -76,11 +94,52 @@ function Player:dash(key)
         self.xVel = -self.dashSpeed
       end
     end
-  end
+  end --]]
 end
 
 function Player:move(dt)
+	local dir = 0
    if love.keyboard.isDown("d", "right") then
+		dir = 1
+   elseif love.keyboard.isDown("a", "left") then
+		dir = -1
+	end
+	for _,a in ipairs(self.actions) do
+		if a == JUMP then
+			--print("JUMP")
+			self.yVel = self.jumpAmount
+		elseif a == DOUBLEJUMP then
+			--print("DOUBLEJUMP")
+			self.yVel = self.jumpAmount * 0.8
+		elseif a == DASH then
+			--print("DASH")
+			self.dashTime = self.dashDuration
+			if self.direction == "right" then
+				self.xVel = self.dashSpeed
+			else 
+				self.xVel = -self.dashSpeed
+			end
+			self.maxSpeed = self.dashSpeed
+		end
+	end
+	self.actions = {}
+
+	self.dashTime = self.dashTime - dt
+	if self.dashTime < 0 then
+		self.dashTime = 0
+		self.maxSpeed = 200
+	end
+
+	if dir == 0 then 
+		self:applyFriction(dt) 
+	else
+		self.acceleration = 5000
+		self.xVel = self.xVel + dir * self.acceleration * dt
+		if math.abs(self.xVel) > self.maxSpeed then
+			self.xVel = dir * self.maxSpeed
+		end
+	end
+--[[
       if love.keyboard.isDown("g") then
         self.acceleration = self.dashSpeed
         self.maxSpeed = self.dashSpeed
@@ -88,7 +147,7 @@ function Player:move(dt)
       self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
       self.acceleration = 5000
       self.maxSpeed = 200
-   elseif love.keyboard.isDown("a", "left") then
+
      if love.keyboard.isDown("g") then
        self.acceleration = self.dashSpeed
        self.maxSpeed = self.dashSpeed
@@ -96,9 +155,7 @@ function Player:move(dt)
       self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
       self.acceleration = 5000
       self.maxSpeed = 200
-   else
-      self:applyFriction(dt)
-   end
+	--]]
 end
 
 function Player:crouch(key)
@@ -143,21 +200,26 @@ function Player:beginContact(a, b, collision)
 end
 
 function Player:land(collision)
+	print("LAND")
    self.currentGroundCollision = collision
    self.yVel = 0
    self.grounded = true
    self.hasDouble = true
    self.graceTime = self.graceDuration
    self.hasDash = true
+	self.dashTime = self.dashDuration 
+	self.maxSpeed = 200
 end
 
 function Player:jump(key)
-   if (key == "w" or key == "up" or key == "space") then
+   if JUMPKEYS[key] then
       if self.grounded or self.graceTime > 0 then
-         self.yVel = self.jumpAmount
+			table.insert(self.actions,JUMP)
+--         self.yVel = self.jumpAmount
          self.graceTime = 0
       elseif self.hasDouble then
-         self.yVel = self.jumpAmount * 0.8
+			table.insert(self.actions,DOUBLEJUMP)
+ --        self.yVel = self.jumpAmount * 0.8
          self.hasDouble = false
       end
    end
