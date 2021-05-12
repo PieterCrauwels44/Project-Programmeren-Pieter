@@ -2,10 +2,12 @@ local Player = {}
 
 local DASHKEYS = {p=true}
 local JUMPKEYS = {space=true,w=true,up=true}
+local CROUCHKEYS = {c=true, down=true}
 
 local DASH = "dash"
 local JUMP = "jump"
 local DOUBLEJUMP = "doublejump"
+local CROUCH = "crouch"
 
 function Player:load()
    self.x = 10
@@ -85,16 +87,14 @@ function Player:dash(key)
 		self.hasDash = false
 		table.insert(self.actions,DASH)
 	end
---[[  if key == "g" then
-    if self.hasDash and not self.grounded then
-      self.hasDash = false
-      if self.direction == "right" then
-        self.xVel = self.dashSpeed
-      elseif self.direction == "left" then
-        self.xVel = -self.dashSpeed
-      end
-    end
-  end --]]
+end
+
+function Player:crouch(key)
+  if CROUCHKEYS[key] and self.grounded then
+    self.height = 16
+    self.crouched = true
+    table.insert(self.actions, CROUCH)
+  end
 end
 
 function Player:move(dt)
@@ -108,15 +108,20 @@ function Player:move(dt)
 		if a == JUMP then
 			--print("JUMP")
 			self.yVel = self.jumpAmount
+      self.crouched = false
+      self.height = 32
 		elseif a == DOUBLEJUMP then
 			--print("DOUBLEJUMP")
 			self.yVel = self.jumpAmount * 0.8
+    elseif a == CROUCH then
+      self.xVel = self.xVel * 0.4
+      self.maxSpeed = self.maxSpeed * 0.4
 		elseif a == DASH then
 			--print("DASH")
 			self.dashTime = self.dashDuration
 			if self.direction == "right" then
 				self.xVel = self.dashSpeed
-			else 
+			else
 				self.xVel = -self.dashSpeed
 			end
 			self.maxSpeed = self.dashSpeed
@@ -127,45 +132,19 @@ function Player:move(dt)
 	self.dashTime = self.dashTime - dt
 	if self.dashTime < 0 then
 		self.dashTime = 0
-		self.maxSpeed = 200
+		self.maxSpeed = math.min(200, self.maxSpeed)
 	end
 
-	if dir == 0 then 
-		self:applyFriction(dt) 
+	if dir == 0 then
+		self:applyFriction(dt)
 	else
 		self.acceleration = 5000
 		self.xVel = self.xVel + dir * self.acceleration * dt
 		if math.abs(self.xVel) > self.maxSpeed then
 			self.xVel = dir * self.maxSpeed
 		end
+    print(self.xVel, self.yVel, self.maxSpeed)
 	end
---[[
-      if love.keyboard.isDown("g") then
-        self.acceleration = self.dashSpeed
-        self.maxSpeed = self.dashSpeed
-      end
-      self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
-      self.acceleration = 5000
-      self.maxSpeed = 200
-
-     if love.keyboard.isDown("g") then
-       self.acceleration = self.dashSpeed
-       self.maxSpeed = self.dashSpeed
-     end
-      self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
-      self.acceleration = 5000
-      self.maxSpeed = 200
-	--]]
-end
-
-function Player:crouch(key)
-  if key == "s" or key == "down" and self.grounded then
-    self.height = 32
-    self.crouched = true
-  elseif key == "space" or key == "up" then
-    self.crouched = false
-    self.height = 32
-  end
 end
 
 function Player:applyFriction(dt)
@@ -207,7 +186,7 @@ function Player:land(collision)
    self.hasDouble = true
    self.graceTime = self.graceDuration
    self.hasDash = true
-	self.dashTime = self.dashDuration 
+	self.dashTime = self.dashDuration
 	self.maxSpeed = 200
 end
 
@@ -250,16 +229,14 @@ function Player:draw()
    local crouchOffset = 0
    if self.crouched then
      scaleY = 0.5
-     crouchOffset = 8
+     crouchOffset = 4
    end
    love.graphics.draw(self.physics.img, self.x, self.y + crouchOffset, 0, scaleX, scaleY, self.width / 2, self.height / 2)
 end
 
 return Player
 
--- slow time
+-- (slow time)
 -- climbing
--- fix crouched
--- level making
+-- level
 -- unlockables
--- fix dash
