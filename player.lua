@@ -1,4 +1,5 @@
 local Player = {}
+local Map = require("map")
 
 local DASHKEYS = {p=true}
 local JUMPKEYS = {space=true,w=true,up=true}
@@ -80,6 +81,10 @@ function Player:applyGravity(dt)
    if not self.grounded then
       self.yVel = self.yVel + self.gravity * dt
    end
+end
+
+function Player:climb()
+
 end
 
 function Player:dash(key)
