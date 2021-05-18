@@ -1,5 +1,4 @@
 local Player = {}
-local Map = require("map")
 
 local DASHKEYS = {p=true}
 local JUMPKEYS = {space=true,w=true,up=true}
@@ -40,7 +39,8 @@ function Player:load()
    self.crouched = false
    self.direction = "right"
    self.alive = true
-
+   self.state = "idle"
+   self:loadAssets()
    self.physics = {}
    self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
    self.physics.body:setFixedRotation(true)
@@ -48,6 +48,21 @@ function Player:load()
    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
    self.physics.body:setGravityScale(0)
    self.physics.img = love.graphics.newImage("/assets/player2.png")
+end
+
+function Player:loadAssets()
+  self.animation = {timer = 0, rate = 0.1}
+  self.animation.idle = {current = 1, total = 3, img = {}}
+  for i=1, self.animation.idle.total do
+    self.animation.idle.img[i] = love.graphics.newImage("/assets/idle"..i..".png")
+  end
+
+  self.animation.run = {current = 1, total = 5, img = {}}
+  for i=1, self.animation.run.total do
+    self.animation.run.img[i] = love.graphics.newImage("/assets/run"..i..".png")
+  end
+
+  self.animation.draw = self.animation.idle.img[1]
 end
 
 function Player:die()
@@ -69,12 +84,38 @@ end
 
 function Player:update(dt)
    self:syncPhysics()
+   self:setState()
+   self:animate(dt)
    self:move(dt)
    self:applyGravity(dt)
-   --self:dash()
-   --self:move(dt)
    self:setDirection()
    self:respawn()
+end
+
+function Player:setState()
+  if self.xVel > 0 or self.xVel < 0 then
+    self.state = "run"
+  elseif self.xVel == 0 then
+    self.state = "idle"
+  end
+end
+
+function Player:animate(dt)
+  self.animation.timer = self.animation.timer + dt
+  if self.animation.timer > self.animation.rate then
+    self.animation.timer = 0
+    self:newFrame()
+  end
+end
+
+function Player:newFrame()
+  local anim = self.animation[self.state]
+  if anim.current < anim.total then
+    anim.current = anim.current + 1
+  else
+    anim.current = 1
+  end
+  self.animation.draw = anim.img[anim.current]
 end
 
 function Player:applyGravity(dt)
@@ -236,7 +277,8 @@ function Player:draw()
      scaleY = 0.5
      crouchOffset = 4
    end
-   love.graphics.draw(self.physics.img, self.x, self.y + crouchOffset, 0, scaleX, scaleY, self.width / 2, self.height / 2)
+   local frame = self.animation.draw
+   love.graphics.draw(frame, self.x, self.y + crouchOffset, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
 end
 
 return Player
