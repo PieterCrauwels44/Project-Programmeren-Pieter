@@ -287,3 +287,6 @@ return Player
 -- climbing
 -- level
 -- unlockables
+-- dash animatie
+-- jump animatie
+-- crouch/slide animatie
