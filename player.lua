@@ -3,11 +3,13 @@ local Player = {}
 local DASHKEYS = {p=true}
 local JUMPKEYS = {space=true,w=true,up=true}
 local CROUCHKEYS = {c=true, down=true}
+local SLOWTIMEKEYS = {tab=true, o=true}
 
 local DASH = "dash"
 local JUMP = "jump"
 local DOUBLEJUMP = "doublejump"
 local CROUCH = "crouch"
+local SLOWTIME = "slowtime"
 
 function Player:load()
    self.x = 10
@@ -21,6 +23,9 @@ function Player:load()
    self.dashSpeed = 1500
 	self.dashTime = 0
 	self.dashDuration = 0.15
+  self.hasSlowtime = true
+  self.slowTimeTimer = 0
+  self.slowTimeDuration = 2
 
    self.hasDash = true
 
@@ -62,6 +67,11 @@ function Player:loadAssets()
     self.animation.run.img[i] = love.graphics.newImage("/assets/run"..i..".png")
   end
 
+  self.animation.jump = {current = 1, total = 4, img = {}}
+  for i=1, self.animation.jump.total do
+    self.animation.jump.img[i] = love.graphics.newImage("/assets/jump"..i..".png")
+  end
+
   self.animation.draw = self.animation.idle.img[1]
 end
 
@@ -90,18 +100,25 @@ function Player:update(dt)
    self:applyGravity(dt)
    self:setDirection()
    self:respawn()
+   self:increaseSlowTimer(dt)
 end
 
 function Player:setState()
-  if self.xVel > 0 or self.xVel < 0 then
+  if self.xVel > 0 or self.xVel < 0 and self.grounded then
     self.state = "run"
-  elseif self.xVel == 0 then
+  elseif self.xVel == 0 and self.grounded then
     self.state = "idle"
+  elseif not self.grounded then
+    self.state = "jump"
   end
 end
 
 function Player:animate(dt)
   self.animation.timer = self.animation.timer + dt
+  if self.state == "run" then
+    self.animation.rate = 0.05
+  end
+  self.animation.rate = 0.1
   if self.animation.timer > self.animation.rate then
     self.animation.timer = 0
     self:newFrame()
@@ -124,8 +141,18 @@ function Player:applyGravity(dt)
    end
 end
 
-function Player:climb()
+function Player:increaseSlowTimer(dt)
+  self.slowTimeTimer = self.slowTimeTimer + dt
+  if self.slowTimeTimer > self.slowTimeDuration then
+    
+  end
+end
 
+function Player:slowTime(key)
+  if SLOWTIMEKEYS[key] and self.hasSlowtime then
+    if self.slowTimeTimer < self.slowTimeDuration then
+    end
+  end
 end
 
 function Player:dash(key)
@@ -263,6 +290,8 @@ function Player:setDirection()
     self.direction = "left"
   elseif self.xVel > 0 then
     self.direction = "right"
+  elseif self.yVel > self.xVel then
+    self.direction = "down"
   end
 end
 
@@ -272,12 +301,22 @@ function Player:draw()
       scaleX = -1
    end
    local scaleY = 1
-   local crouchOffset = 0
-   if self.crouched then
-     scaleY = 0.5
-     crouchOffset = 4
-   end
    local frame = self.animation.draw
+   local offsetX = 3
+   local offsetY = 0
+   if self.state == "run" or self.state == "jump" then
+     if self.direction == "right" then
+       offsetX = 3
+     elseif self.direction == "left" then
+       offsetX = -3
+     elseif self.direction == "down" then
+       offsetY = 3
+       offsetX = 2
+     end
+     love.graphics.setColor(1, 0.8, 1, 0.4)
+     love.graphics.draw(frame, self.x - offsetX, self.y + offsetY, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
+   end
+   love.graphics.setColor(1, 1, 1, 1)
    love.graphics.draw(frame, self.x, self.y + crouchOffset, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
 end
 
