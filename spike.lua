@@ -1,6 +1,6 @@
 
 
-local Spike = {img = love.graphics.newImage("/assets/spike/spikes.png")}
+local Spike = {img = love.graphics.newImage("/assets/spike/spike.png")}
 Spike.__index = Spike
 
 Spike.width = Spike.img:getWidth()
