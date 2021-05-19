@@ -312,7 +312,7 @@ function Player:draw()
        offsetY = 4
        offsetX = 1
      end
-     love.graphics.setColor(1, 0.8, 1, 0.4)
+     love.graphics.setColor(0.5, 0, 0.8, 0.4)
      love.graphics.draw(frame, self.x - offsetX, self.y + offsetY, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
    end
    love.graphics.setColor(1, 1, 1, 1)
