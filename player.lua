@@ -144,7 +144,7 @@ end
 function Player:increaseSlowTimer(dt)
   self.slowTimeTimer = self.slowTimeTimer + dt
   if self.slowTimeTimer > self.slowTimeDuration then
-    
+
   end
 end
 
@@ -310,14 +310,14 @@ function Player:draw()
      elseif self.direction == "left" then
        offsetX = -3
      elseif self.direction == "down" then
-       offsetY = 3
-       offsetX = 2
+       offsetY = 4
+       offsetX = 1
      end
      love.graphics.setColor(1, 0.8, 1, 0.4)
      love.graphics.draw(frame, self.x - offsetX, self.y + offsetY, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
    end
    love.graphics.setColor(1, 1, 1, 1)
-   love.graphics.draw(frame, self.x, self.y + crouchOffset, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
+   love.graphics.draw(frame, self.x, self.y, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
 end
 
 return Player
@@ -326,6 +326,7 @@ return Player
 -- climbing
 -- level
 -- unlockables
+
 -- dash animatie
 -- jump animatie
 -- crouch/slide animatie
