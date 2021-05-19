@@ -52,24 +52,23 @@ function Player:load()
    self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
    self.physics.body:setGravityScale(0)
-   self.physics.img = love.graphics.newImage("/assets/player2.png")
 end
 
 function Player:loadAssets()
   self.animation = {timer = 0, rate = 0.1}
   self.animation.idle = {current = 1, total = 3, img = {}}
   for i=1, self.animation.idle.total do
-    self.animation.idle.img[i] = love.graphics.newImage("/assets/idle"..i..".png")
+    self.animation.idle.img[i] = love.graphics.newImage("/assets/player/idle/idle"..i..".png")
   end
 
   self.animation.run = {current = 1, total = 5, img = {}}
   for i=1, self.animation.run.total do
-    self.animation.run.img[i] = love.graphics.newImage("/assets/run"..i..".png")
+    self.animation.run.img[i] = love.graphics.newImage("/assets/player/run/run"..i..".png")
   end
 
   self.animation.jump = {current = 1, total = 4, img = {}}
   for i=1, self.animation.jump.total do
-    self.animation.jump.img[i] = love.graphics.newImage("/assets/jump"..i..".png")
+    self.animation.jump.img[i] = love.graphics.newImage("/assets/player/jump/jump"..i..".png")
   end
 
   self.animation.draw = self.animation.idle.img[1]
@@ -100,7 +99,7 @@ function Player:update(dt)
    self:applyGravity(dt)
    self:setDirection()
    self:respawn()
-   self:increaseSlowTimer(dt)
+   --self:increaseSlowTimer(dt)
 end
 
 function Player:setState()
@@ -141,7 +140,7 @@ function Player:applyGravity(dt)
    end
 end
 
-function Player:increaseSlowTimer(dt)
+--[[function Player:increaseSlowTimer(dt)
   self.slowTimeTimer = self.slowTimeTimer + dt
   if self.slowTimeTimer > self.slowTimeDuration then
 
@@ -153,7 +152,7 @@ function Player:slowTime(key)
     if self.slowTimeTimer < self.slowTimeDuration then
     end
   end
-end
+end --]]
 
 function Player:dash(key)
 	if DASHKEYS[key] and self.hasDash and (not self.grounded) then
@@ -328,5 +327,7 @@ return Player
 -- unlockables
 
 -- dash animatie
+-- dead animation
 -- jump animatie
 -- crouch/slide animatie
+-- spike
