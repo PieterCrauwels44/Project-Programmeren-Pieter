@@ -300,6 +300,9 @@ function Player:draw()
       scaleX = -1
    end
    local scaleY = 1
+   if self.crouched then
+     scaleY = 0.5
+   end
    local frame = self.animation.draw
    local offsetX = 3
    local offsetY = 0
