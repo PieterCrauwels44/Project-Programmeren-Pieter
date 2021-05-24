@@ -1,5 +1,5 @@
 
-
+local game = require("game")
 local Spike = {img = love.graphics.newImage("/assets/spike/spike.png")}
 Spike.__index = Spike
 
@@ -7,7 +7,7 @@ Spike.width = Spike.img:getWidth()
 Spike.height = Spike.img:getHeight()
 
 local ActiveSpikes = {}
-local Player = require("player")
+
 
 function Spike.removeAll()
    for i,v in ipairs(ActiveSpikes) do
@@ -56,7 +56,7 @@ function Spike.beginContact(a, b, collision)
    for i,instance in ipairs(ActiveSpikes) do
       if a == instance.physics.fixture or b == instance.physics.fixture then
          if a == Player.physics.fixture or b == Player.physics.fixture then
-            Player:die()
+            game.player:die()
             return true
          end
       end
