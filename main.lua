@@ -35,7 +35,6 @@ end
 function love.keypressed(key)
 	Player:jump(key)
 	Map:nextMap(key)
-	Player:crouch(key)
 	Player:dash(key)
 	--Player:slowTime(key)
 end

@@ -1,9 +1,6 @@
-
+local game = require("game")
 local Map = {}
 local STI = require("sti")
-local Player = require("player")
-local Spike = require("spike")
-
 function Map:load()
    self.currentLevel = 1
    World = love.physics.newWorld(0,2000)
@@ -35,7 +32,7 @@ end
 
 function Map:clean()
   self.level:box2d_removeLayer("solid")
-  Spike.removeAll()
+  game.spike.removeAll()
 end
 
 function Map:init()
@@ -45,8 +42,10 @@ function Map:init()
    self.solidLayer = self.level.layers.solid
    self.groundLayer = self.level.layers.ground
    self.entityLayer = self.level.layers.entity
+   self.wallLayer = self.level.layers.climb
    self.solidLayer.visible = false
    self.entityLayer.visible = false
+   self.wallLayer.visible = false
    MapWidth = self.groundLayer.width * 16
 
    self:spawnEntities()
@@ -55,7 +54,7 @@ end
 function Map:spawnEntities()
 	for i,v in ipairs(self.entityLayer.objects) do
 		if v.type == "spikes" then
-			Spike.new(v.x + v.width / 2, v.y + v.height / 2)
+			game.spike.new(v.x + v.width / 2, v.y + v.height / 2)
 		end
 	end
 end

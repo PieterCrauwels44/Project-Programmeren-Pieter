@@ -1,22 +1,22 @@
+local game = require("game")
 local Player = {}
-
+local STI = require("sti")
 local DASHKEYS = {p=true}
 local JUMPKEYS = {space=true,w=true,up=true}
-local CROUCHKEYS = {c=true, down=true}
 local SLOWTIMEKEYS = {tab=true, o=true}
 
 local DASH = "dash"
 local JUMP = "jump"
 local DOUBLEJUMP = "doublejump"
-local CROUCH = "crouch"
 local SLOWTIME = "slowtime"
 
 function Player:load()
    self.x = 10
-   self.y = 300
+   self.y = 250
    self.startX = self.x
    self.startY = self.y
-
+   self.test = self.wallLayer
+   self.sideCollision = false
    self.xVel = 0
    self.yVel = 0
    self.maxSpeed = 200
@@ -26,6 +26,7 @@ function Player:load()
   self.hasSlowtime = true
   self.slowTimeTimer = 0
   self.slowTimeDuration = 2
+  self.climbing = true
 
    self.hasDash = true
 
@@ -41,7 +42,6 @@ function Player:load()
    self.graceTime = 0
    self.graceDuration = 0.1
    self.grounded = false
-   self.crouched = false
    self.direction = "right"
    self.alive = true
    self.state = "idle"
@@ -82,8 +82,6 @@ function Player:respawn()
    if not self.alive then
       self:resetPosition()
       self.alive = true
-      self.height = 32
-      self.crouched = false
    end
 end
 
@@ -93,13 +91,27 @@ end
 
 function Player:update(dt)
    self:syncPhysics()
+   self:applyGravity(dt)
    self:setState()
    self:animate(dt)
    self:move(dt)
-   self:applyGravity(dt)
+   self:climb()
    self:setDirection()
    self:respawn()
    --self:increaseSlowTimer(dt)
+end
+
+function Player:climb()
+  if self.sideCollision == "left" or self.sideCollision == "right"then
+    if not self.grounded then
+      self.climbing = true
+      self:hold()
+    end
+  end
+end
+
+function Player:hold()
+
 end
 
 function Player:setState()
@@ -161,14 +173,6 @@ function Player:dash(key)
 	end
 end
 
-function Player:crouch(key)
-  if CROUCHKEYS[key] and self.grounded then
-    self.height = 16
-    self.crouched = true
-    table.insert(self.actions, CROUCH)
-  end
-end
-
 function Player:move(dt)
 	local dir = 0
    if love.keyboard.isDown("d", "right") then
@@ -180,14 +184,9 @@ function Player:move(dt)
 		if a == JUMP then
 			--print("JUMP")
 			self.yVel = self.jumpAmount
-      self.crouched = false
-      self.height = 32
 		elseif a == DOUBLEJUMP then
 			--print("DOUBLEJUMP")
 			self.yVel = self.jumpAmount * 0.8
-    elseif a == CROUCH then
-      self.xVel = self.xVel * 0.4
-      self.maxSpeed = self.maxSpeed * 0.4
 		elseif a == DASH then
 			--print("DASH")
 			self.dashTime = self.dashDuration
@@ -215,7 +214,6 @@ function Player:move(dt)
 		if math.abs(self.xVel) > self.maxSpeed then
 			self.xVel = dir * self.maxSpeed
 		end
-    print(self.xVel, self.yVel, self.maxSpeed)
 	end
 end
 
@@ -241,17 +239,36 @@ function Player:beginContact(a, b, collision)
       elseif ny < 0 then
          self.yVel = 0
       end
+      if b == map.wallLayer then
+      if nx < 0 then
+        self.sideCollision = "left"
+        print("coll")
+      elseif nx > 0 then
+        self.sideCollision = "right"
+        print("coll")
+      end
+      end
+
    elseif b == self.physics.fixture then
       if ny < 0 then
          self:land(collision)
       elseif ny > 0 then
          self.yVel = 0
       end
+      if a == map.wallLayer then
+      if nx < 0 then
+        self.sideCollision = "left"
+        print("coll")
+      elseif nx > 0 then
+        self.sideCollision = "right"
+        print("coll")
+      end
+    end
+
    end
 end
 
 function Player:land(collision)
-	print("LAND")
    self.currentGroundCollision = collision
    self.yVel = 0
    self.grounded = true
@@ -296,17 +313,14 @@ end
 
 function Player:draw()
    local scaleX = 1
+   local scaleY = 1
+   local offsetX = 3
+   local offsetY = 0
+   local frame = self.animation.draw
    if self.direction == "left" then
       scaleX = -1
    end
-   local scaleY = 1
-   if self.crouched then
-     scaleY = 0.5
-   end
-   local frame = self.animation.draw
-   local offsetX = 3
-   local offsetY = 0
-   if self.state == "run" or self.state == "jump" then
+   if self.state == "run" or self.state == "jump" then -- schaduw
      if self.direction == "right" then
        offsetX = 3
      elseif self.direction == "left" then
@@ -316,9 +330,10 @@ function Player:draw()
        offsetX = 1
      end
      love.graphics.setColor(0.5, 0, 0.8, 0.4)
-     love.graphics.draw(frame, self.x - offsetX, self.y + offsetY, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
+     love.graphics.draw(frame, self.x - offsetX, self.y + offsetY, 0, scaleX, scaleY,  frame:getWidth() / 2, self.height + 15)
    end
-   love.graphics.setColor(1, 1, 1, 1)
+
+   love.graphics.setColor(1, 1, 1, 1) -- echte speler
    love.graphics.draw(frame, self.x, self.y, 0, scaleX, scaleY, frame:getWidth() / 2, self.height + 15)
 end
 
@@ -329,8 +344,6 @@ return Player
 -- level
 -- unlockables
 
--- dash animatie
--- dead animation
--- jump animatie
--- crouch/slide animatie
+-- dash animatie invoeren
+-- dead animation invoeren
 -- spike
