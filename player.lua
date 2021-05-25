@@ -240,13 +240,13 @@ function Player:beginContact(a, b, collision)
          self.yVel = 0
       end
       if b == game.map.wallLayer then
-      if nx < 0 then
-        self.sideCollision = "left"
-        print("coll")
-      elseif nx > 0 then
-        self.sideCollision = "right"
-        print("coll")
-      end
+        if nx < 0 then
+          self.sideCollision = "left"
+          print("coll")
+        elseif nx > 0 then
+          self.sideCollision = "right"
+          print("coll")
+        end
       end
 
    elseif b == self.physics.fixture then
@@ -256,14 +256,14 @@ function Player:beginContact(a, b, collision)
          self.yVel = 0
       end
       if a == game.map.wallLayer then
-      if nx < 0 then
-        self.sideCollision = "left"
-        print("coll")
-      elseif nx > 0 then
-        self.sideCollision = "right"
-        print("coll")
+        if nx < 0 then
+          self.sideCollision = "left"
+          print("coll")
+        elseif nx > 0 then
+          self.sideCollision = "right"
+          print("coll")
+        end
       end
-    end
 
    end
 end
