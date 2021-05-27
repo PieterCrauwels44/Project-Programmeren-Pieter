@@ -1,11 +1,11 @@
 local game = require("game")
+local Spawn = require("spawn")
 local Map = {}
 local STI = require("sti")
 function Map:load()
    self.currentLevel = 1
    World = love.physics.newWorld(0,2000)
    World:setCallbacks(beginContact, endContact)
-
    self:init()
 end
 
@@ -24,15 +24,10 @@ end
 function Map:nextMap(key)
   if key == "e" or key == "f" then
     self:changeLevel()
-    self:clean()
+    Spawn:clean(self.level)
     self:init()
     setBackground()
   end
-end
-
-function Map:clean()
-  self.level:box2d_removeLayer("solid")
-  game.spike.removeAll()
 end
 
 function Map:init()
@@ -47,16 +42,7 @@ function Map:init()
    self.entityLayer.visible = false
    self.wallLayer.visible = false
    MapWidth = self.groundLayer.width * 16
-
-   self:spawnEntities()
-end
-
-function Map:spawnEntities()
-	for i,v in ipairs(self.entityLayer.objects) do
-		if v.type == "spikes" then
-			game.spike.new(v.x + v.width / 2, v.y + v.height / 2)
-		end
-	end
+   Spawn:spawnEntities(self.level.layers.entity.objects)
 end
 
 return Map

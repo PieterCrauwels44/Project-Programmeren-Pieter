@@ -1,4 +1,5 @@
-local game = require("game")
+--local game = require("game")
+local Map = require("map")
 local Player = {}
 local STI = require("sti")
 local DASHKEYS = {p=true}
@@ -239,7 +240,7 @@ function Player:beginContact(a, b, collision)
       elseif ny < 0 then
          self.yVel = 0
       end
-      if b == game.map.wallLayer then
+      if b == map.wallLayer then
         if nx < 0 then
           self.sideCollision = "left"
           print("coll")
@@ -255,7 +256,7 @@ function Player:beginContact(a, b, collision)
       elseif ny > 0 then
          self.yVel = 0
       end
-      if a == game.map.wallLayer then
+      if a == map.wallLayer then
         if nx < 0 then
           self.sideCollision = "left"
           print("coll")
