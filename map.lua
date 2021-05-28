@@ -1,5 +1,4 @@
-local game = require("game")
-local Spawn = require("spawn")
+local Spike = require("spike")
 local Map = {}
 local STI = require("sti")
 function Map:load()
@@ -24,10 +23,15 @@ end
 function Map:nextMap(key)
   if key == "e" or key == "f" then
     self:changeLevel()
-    Spawn:clean(self.level)
+    self:clean(self.level)
     self:init()
     setBackground()
   end
+end
+
+function Map:clean()
+  self.level:box2d_removeLayer("solid")
+  Spike:removeAll()
 end
 
 function Map:init()
@@ -42,7 +46,15 @@ function Map:init()
    self.entityLayer.visible = false
    self.wallLayer.visible = false
    MapWidth = self.groundLayer.width * 16
-   Spawn:spawnEntities(self.level.layers.entity.objects)
+   self:spawnEntities()
+end
+
+function Map:spawnEntities()
+	for i,v in ipairs(self.entityLayer.objects) do
+		if v.type == "spikes" then
+			Spike:new(v.x + v.width / 2, v.y + v.height / 2)
+		end
+	end
 end
 
 return Map

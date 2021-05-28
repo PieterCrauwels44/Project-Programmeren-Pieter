@@ -3,7 +3,6 @@ local Player = require("player")
 local Camera = require("camera")
 local Map = require("map")
 local Spike  = require("spike")
-local Game = require("game")
 
 function love.load()
 	Map:load()
@@ -37,7 +36,6 @@ function love.keypressed(key)
 	Player:jump(key)
 	Map:nextMap(key)
 	Player:dash(key)
-	--Player:slowTime(key)
 end
 
 function beginContact(a, b, collision)
