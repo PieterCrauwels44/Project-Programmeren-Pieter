@@ -163,7 +163,7 @@ function Player:setState()
     self.state = "dash"
   elseif not self.alive and self.alive then
     self.state = "dead"
-  elseif self.slowFactorY == 0.1 then
+  elseif self.slowFactorY == 0.025 then
     self.state = "slow"
   end
   print(self.state)
@@ -263,7 +263,7 @@ function Player:move(dt)
       self.gravityFactor = 1
     elseif slow then
       self.slowFactorX = 0.7
-      self.slowFactorY = 0.1
+      self.slowFactorY = 0.025
       self.gravityFactor = 0.4
    end
 
